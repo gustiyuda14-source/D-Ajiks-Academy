@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Ajiks Academy - TIU CAT System</title>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/react.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(to bottom right, #0f172a, #082f49, #0f172a);
+            font-family: 'Inter', sans-serif;
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        svg { display: inline-block; }
+        
+        @media print {
+            body { background: white; }
+            .no-print { display: none !important; }
+            .print-section { page-break-inside: avoid; }
+            .print-page { page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const DajksAcademy = () => {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [timeLeft, setTimeLeft] = useState(90 * 60);
+            const [showResults, setShowResults] = useState(false);
+            const [testStarted, setTestStarted] = useState(false);
+            const [pesertaNama, setPesertaNama] = useState('');
+            const resultsPrintRef = useRef();
+
+            const questions = [
+                {
+                    id: 1,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Sebuah pekerjaan jika dikerjakan oleh Jainudin bisa selesai selama 6 hari, dan jika dikerjakan oleh Mitha sendirian dapat selesai dalam 12 hari. Berapa hari pekerjaan itu akan selesai jika dikerjakan oleh mereka berdua secara bersama-sama?",
+                    options: ['4 hari', '5 hari', '6 hari', '¼ hari', '3 hari'],
+                    correct: 0,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 2,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Sebuah pekerjaan dapat diselesaikan oleh Dadan dalam waktu 2 jam sedangkan Budi membutuhkan 4 jam untuk melakukan hal itu. Jika mereka berdua bekerja bersama-sama, berapakah lama pekerjaan itu dapat selesai?",
+                    options: ['1 jam 15 menit', '1 jam 20 menit', '2 jam 10 menit', '3 jam'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 3,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Mira dapat menyelesaikan soal dalam waktu 4 jam sedangkan Agung membutuhkan waktu 6 jam. Jika mereka mengerjakan soal bersama-sama, waktu yang dibutuhkan untuk dapat mengerjakan soal itu adalah?",
+                    options: ['2,5 jam', '2 jam 24 menit', '125 Menit', '2 jam 40 menit'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 4,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Si A menyelesaikan pekerjaan dalam 2 hari SI B menyelesaikan pekerjaan yang sama dalam 3 hari. Jika bekerja bersama-sama dalam 1 hari berapa bagian yang Belum selesai?",
+                    options: ['8/15', '7/15', '1/15', '6/15'],
+                    correct: 0,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 5,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Si A menyelesaikan pekerjaan dalam 7 hari. Si B dalam 5 hari. jika bersama2 sama dalam 2 hari, berapa bagian yang telah selesai dan belum selesai?",
+                    options: ['24/35 bagian dan 11/35 bagian', '12/35 bagian dan 23/35 bagian'],
+                    correct: 0,
+                    optionLabels: ['A', 'B']
+                },
+                {
+                    id: 6,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Fadil dapat menyelesaikan sebuah pekerjaan selama 15 hari sendirian. Billy dapat menyelesaikan pekerjaan yang sama dalam 20 hari. Jika mereka bekerja selama 4 hari maka pekerjaan yang belum terselesaikan adalah … bagian",
+                    options: ['8/15', '7/15', '1/15'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C']
+                },
+                {
+                    id: 7,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Andi menyelesaikan pekerjaan dalam 4 hari. Jika pekerjaan tersebut diselesaikan oleh Budi dapat selesai selama 6 hari. Jika mereka berkerja bersama-sama hanya dalam 2 hari, maka Budi dapat menyelesaikan sisa pekerjaan tersebut sendirian dalam . . . . hari.",
+                    options: ['1', '2', '3', '4', '5'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 8,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Andi menyelesaikan pekerjaan dalam 4 hari. Jika pekerjaan tersebut diselesaikan oleh Budi dapat selesai dalam 6 hari. Jika mereka berkerja bersama-sama hanya selama 2 hari, maka Andi dapat Menyelesaikan sisa pekerjaan tersebut sendirian dalam . . . . (1 hari = 8 jam kerja)",
+                    options: ['8 jam', '5 jam', '5 jam 30 menit'],
+                    correct: 2,
+                    optionLabels: ['A', 'B', 'C']
+                },
+                {
+                    id: 9,
+                    category: "PEKERJAAN TIPE 1",
+                    question: "Jika dikerjakan masing-masing oleh Si A, Si B dan Si C, secara berturut-turut dapat menyelesaikan pekerjaan dalam 2 hari, 6 hari dan 4 hari. Jika bersama-sama dapat selesai dalam .....",
+                    options: ['12/11 hari', '1,5 hari', '11/12 hari'],
+                    correct: 0,
+                    optionLabels: ['A', 'B', 'C']
+                },
+                {
+                    id: 10,
+                    category: "PEKERJAAN TIPE 2",
+                    question: "Budi dapat membuat 6 patung dalam 2 hari. Sedangkan, Mirna membuat 9 patung dalam 3 hari. Dalam berapa hari mereka bisa membuat 18 patung jika dilakukan bersama-sama?",
+                    options: ['3 hari', '4 hari', '5 hari', '1/3 hari'],
+                    correct: 0,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 11,
+                    category: "PEKERJAAN TIPE 2",
+                    question: "Sebuah pekerjaan, jika dikerjakan oleh 2 pria selesai dalam waktu 9 hari, sedangkan jika dilakukan oleh 3 orang wanita selesai dalam waktu 10 hari. Berapa harikah pekerjaan tersebut akan selesai dilakukan oleh 3 pria dan 5 wanita berbarengan?",
+                    options: ['3 hari', '4 hari'],
+                    correct: 0,
+                    optionLabels: ['A', 'B']
+                },
+                {
+                    id: 12,
+                    category: "PEKERJAAN TIPE 2",
+                    question: "3 buah pekerjaan jika di kerjakan oleh 2 orang pria selesai dalam waktu 3 hari. Pekerjaan tersebut jika di kerjakan 3 wanita dapat selesai dalam waktu 6 hari. Berapa hari yang dibutuhkan untuk menyelesaikan 6 pekerjaan sejenis jika diselesaikan bersama-sama oleh 1 pria dan 1 wanita?",
+                    options: ['8 hari', '6 hari'],
+                    correct: 0,
+                    optionLabels: ['A', 'B']
+                },
+                {
+                    id: 13,
+                    category: "PEKERJAAN TIPE 2",
+                    question: "Mesin Pompa A dapat mengisi 3 tangki air selama 2 jam. Mesin Pompa B dapat mengisi 3 Tangki yang sama selama 3 jam. Berapa menit yang di butuhkan oleh pompa A dan Pompa B bersama-sama untuk mengisi 1 buah Tangki air?",
+                    options: ['20 Menit', '24 Menit'],
+                    correct: 1,
+                    optionLabels: ['A', 'B']
+                },
+                {
+                    id: 14,
+                    category: "PEKERJAAN TIPE 2",
+                    question: "Untuk menggali selokan sepanjang 2 km dalam 3 hari diperlukan 6 orang. Berapa orang yang diperlukan untuk menggali selama 0,5 hari?",
+                    options: ['3 orang', '5 orang', '12 orang', '36 orang', '18 orang'],
+                    correct: 3,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 15,
+                    category: "PEKERJAAN TIPE 2",
+                    question: "Untuk menggali selokan sepanjang 2 km dalam 3 hari diperlukan 6 orang. Berapa orang yang diperlukan untuk menggali 3 km selokan selama 3 hari?",
+                    options: ['3 orang', '5 orang', '9 orang', '12 orang'],
+                    correct: 2,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 16,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Sebuah pekerjaan selesai oleh 8 pekerja selama 15 hari. Jika ingin selesai menjadi 12 hari, berapakah jumlah pekerja yang harus ditambah?",
+                    options: ['2 orang', '3 orang', '4 orang', '5 orang'],
+                    correct: 0,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 17,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu pekerjaan rencananya akan diselesaikan selama 25 hari oleh 20 pekerja. Ternyata setelah 10 hari bekerja, pekerjaan tersebut terhenti selama 3 hari. Jika pekerjaan tersebut harus diselesaikan tepat waktu, maka tambahan pekerja yang diperlukan adalah . . .",
+                    options: ['3 orang', '5 orang', '6 orang', '10 orang', '25 orang'],
+                    correct: 2,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 18,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu pekerjaan direncanakan dikerja selama 12 hari oleh 10 orang. Setelah 6 hari, diminta dipercepat 4 hari. Pekerjaan tersbut akan selesai sesuai pemintaan jika menambah …. orang pekerja.",
+                    options: ['10', '20', '30', '21'],
+                    correct: 3,
+                    optionLabels: ['A', 'B', 'C', 'D']
+                },
+                {
+                    id: 19,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu pekerjaan harus selesai dalam 1,5 tahun dengan 140 pekerja. Setelah jalan 4 bulan, pekerjaan tersebut diminta untuk dipercepat 6 bulan. Berapa tambahan pekerja yang dibutuhkan?",
+                    options: ['100 orang', '105 orang', '110 orang'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C']
+                },
+                {
+                    id: 20,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu proyek dijadwalkan selesai dalam waktu 40 hari jika dikerjakan oleh 60 orang pekerja. Memasuki hari ke-21, ada 10 orang pekerja yang sakit dan baru bekerja lagi 3 hari setelahnya. Agar proyek tepat waktu, jumlah minimal pekerja yang harus ditambahkan adalah … pekerja",
+                    options: ['2', '3', '4', '5', '6'],
+                    correct: 2,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 21,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu proyek dijadwalkan selesai dalam waktu 40 hari jika dikerjakan oleh 60 orang pekerja. Memasuki hari ke-21, ada 15 orang pekerja yang sakit dan baru bekerja lagi 4 hari setelahnya. Agar proyek tepat waktu, jumlah minimal pekerja yang harus ditambahkan adalah … pekerja",
+                    options: ['2', '3', '4', '5', '6'],
+                    correct: 2,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 22,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Renovasi gorong-gorong direncanakan selesai dalam 20 hari dan dikerjakan oleh 18 orang pekerja. Pada hari ke-6 pekerjaan dihentikan karena hujan selama total 4 hari. Kemudian pada hari ke 12, pekerjaan dihentikan lagi selama 3 hari karena kehabisan material. Jika pekerjaan itu harus selesai sesuai target awal, maka jumlah pekerja yang harus ditambahkan adalah . . . orang",
+                    options: ['20', '21', '22', '23', '24'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C', 'D', 'E']
+                },
+                {
+                    id: 23,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu pekerjaan akan dikerja 8 orang dalam 30 hari. Saat pekerjaan selesai 75% bagiannya, pekerja ditambah 2 orang, Berapa hari untuk menyelesaikan sisa pekerjaan tersebut?",
+                    options: ['5 hari', '6 hari', '7 hari'],
+                    correct: 0,
+                    optionLabels: ['A', 'B', 'C']
+                },
+                {
+                    id: 24,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu pekerjaan akan dikerja 8 orang dalam 30 hari. Saat pekerjaan selesai 70% bagiannya, pekerja dikurangi 2 orang, Berapa hari untuk menyelesaikan sisa pekerjaan tersbut?",
+                    options: ['10 hari', '11 hari', '12 hari'],
+                    correct: 2,
+                    optionLabels: ['A', 'B', 'C']
+                },
+                {
+                    id: 25,
+                    category: "PEKERJAAN TIPE 3",
+                    question: "Suatu pekerjaan akan dikerja 15 orang dalam 70 hari. Saat pekerjaan selesai 60% bagiannya, pekerja dikurangi 3 orang, Berapa hari untuk menyelesaikan sisa pekerjaan tersbut?",
+                    options: ['30 hari', '35 hari', '40 hari'],
+                    correct: 1,
+                    optionLabels: ['A', 'B', 'C']
+                },
+            ];
+
+            useEffect(() => {
+                if (!testStarted || showResults) return;
+                const timer = setInterval(() => {
+                    setTimeLeft(prev => {
+                        if (prev <= 1) {
+                            setShowResults(true);
+                            return 0;
+                        }
+                        return prev - 1;
+                    });
+                }, 1000);
+                return () => clearInterval(timer);
+            }, [testStarted, showResults]);
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            const handleAnswer = (index) => {
+                setAnswers({
+                    ...answers,
+                    [currentQuestion]: index
+                });
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                questions.forEach((q, idx) => {
+                    if (answers[idx] === q.correct) correct++;
+                });
+                return { correct, total: questions.length, percentage: Math.round((correct / questions.length) * 100) };
+            };
+
+            const handlePrint = () => {
+                window.print();
+            };
+
+            const handleDownloadPDF = () => {
+                const element = resultsPrintRef.current;
+                const opt = {
+                    margin: 10,
+                    filename: `Hasil_Ujian_${pesertaNama || 'Peserta'}_${new Date().getTime()}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                };
+                html2pdf().set(opt).from(element).save();
+            };
+
+            const score = calculateScore();
+
+            if (!testStarted) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 flex items-center justify-center p-4">
+                        <div className="max-w-2xl w-full">
+                            <div className="text-center mb-12">
+                                <h1 className="playfair text-white mb-4" style={{fontSize: '3.5rem'}}>
+                                    D'Ajiks Academy
+                                </h1>
+                                <div className="w-20 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto mb-8"></div>
+                                <p className="text-emerald-200 text-xl mb-2">Tes Intelegensia Umum (TIU)</p>
+                                <p className="text-slate-300 text-lg">SKD CPNS 2021 - Materi Pekerjaan</p>
+                            </div>
+
+                            <div className="bg-slate-800/50 backdrop-blur border border-emerald-500/30 rounded-2xl p-8 mb-8">
+                                <div className="mb-6">
+                                    <label className="block text-slate-300 text-sm font-semibold mb-3">
+                                        Nama Peserta (Opsional)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={pesertaNama}
+                                        onChange={(e) => setPesertaNama(e.target.value)}
+                                        placeholder="Masukkan nama Anda..."
+                                        className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-3 gap-4 mb-8">
+                                    <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                                        <p className="text-emerald-300 text-sm font-semibold mb-1">Jumlah Soal</p>
+                                        <p className="text-white text-3xl font-bold">25</p>
+                                    </div>
+                                    <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                                        <p className="text-emerald-300 text-sm font-semibold mb-1">Durasi</p>
+                                        <p className="text-white text-3xl font-bold">90 Min</p>
+                                    </div>
+                                    <div className="bg-slate-700/50 rounded-lg p-4 text-center">
+                                        <p className="text-emerald-300 text-sm font-semibold mb-1">Kategori</p>
+                                        <p className="text-white text-3xl font-bold">3 Tipe</p>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4 text-slate-300 mb-8">
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">✓</span>
+                                        <p>Tipe 1: Kecepatan Kerja Individual & Bersama-sama (10 soal)</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">✓</span>
+                                        <p>Tipe 2: Variasi Jumlah Pekerja & Target (6 soal)</p>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <span className="text-emerald-400 mt-1">✓</span>
+                                        <p>Tipe 3: Penambahan/Pengurangan Pekerja & Timeline (9 soal)</p>
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setTestStarted(true)}
+                                    className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-200 text-lg"
+                                >
+                                    Mulai Ujian
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (showResults) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 p-4">
+                        <div className="max-w-4xl mx-auto">
+                            {/* Screen View */}
+                            <div className="no-print mb-8">
+                                <div className="text-center mb-8">
+                                    <h1 className="playfair text-white mb-4" style={{fontSize: '2.5rem'}}>
+                                        Hasil Ujian Selesai ✓
+                                    </h1>
+                                    <div className="w-16 h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 mx-auto"></div>
+                                </div>
+
+                                <div className="bg-slate-800/50 backdrop-blur border border-emerald-500/30 rounded-2xl p-6 mb-6">
+                                    <div className="flex justify-center gap-4 flex-wrap">
+                                        <button
+                                            onClick={handlePrint}
+                                            className="px-6 py-3 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500 text-blue-300 rounded-lg transition-all duration-200 font-semibold"
+                                        >
+                                            🖨️ Print
+                                        </button>
+                                        <button
+                                            onClick={handleDownloadPDF}
+                                            className="px-6 py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500 text-red-300 rounded-lg transition-all duration-200 font-semibold"
+                                        >
+                                            📥 Download PDF
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setTestStarted(false);
+                                                setShowResults(false);
+                                                setCurrentQuestion(0);
+                                                setAnswers({});
+                                                setTimeLeft(90 * 60);
+                                            }}
+                                            className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg transition-all duration-200 font-semibold"
+                                        >
+                                            🔄 Ulangi Ujian
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Print Section */}
+                            <div ref={resultsPrintRef} className="bg-white p-8 print-section">
+                                {/* Header */}
+                                <div className="border-b-2 border-slate-300 pb-6 mb-6">
+                                    <h1 className="playfair text-slate-900 text-3xl font-bold mb-2">
+                                        D'Ajiks Academy
+                                    </h1>
+                                    <p className="text-slate-600 font-semibold">
+                                        Laporan Hasil Ujian - Tes Intelegensia Umum (TIU) SKD CPNS 2021
+                                    </p>
+                                </div>
+
+                                {/* Informasi Peserta */}
+                                <div className="grid grid-cols-2 gap-6 mb-8 text-slate-700">
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-500 mb-1">Nama Peserta</p>
+                                        <p className="text-lg font-bold">{pesertaNama || '(Tidak diisi)'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-500 mb-1">Tanggal Ujian</p>
+                                        <p className="text-lg font-bold">{new Date().toLocaleDateString('id-ID')}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-500 mb-1">Total Soal</p>
+                                        <p className="text-lg font-bold">{score.total} soal</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-500 mb-1">Waktu Ujian</p>
+                                        <p className="text-lg font-bold">90 menit</p>
+                                    </div>
+                                </div>
+
+                                {/* Skor Ringkas */}
+                                <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border-2 border-emerald-300 rounded-lg p-6 mb-8">
+                                    <div className="grid grid-cols-4 gap-4 text-center">
+                                        <div>
+                                            <p className="text-sm font-semibold text-slate-600 mb-2">Skor</p>
+                                            <p className="text-3xl font-bold text-emerald-700">{score.percentage}%</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold text-slate-600 mb-2">Benar</p>
+                                            <p className="text-3xl font-bold text-green-600">{score.correct}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold text-slate-600 mb-2">Salah</p>
+                                            <p className="text-3xl font-bold text-red-600">{score.total - score.correct}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold text-slate-600 mb-2">Nilai 0-100</p>
+                                            <p className="text-3xl font-bold text-slate-700">{score.percentage}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Detail Jawaban */}
+                                <div>
+                                    <h2 className="text-2xl font-bold text-slate-800 mb-6 border-b-2 border-slate-300 pb-3">
+                                        Detail Jawaban
+                                    </h2>
+
+                                    {questions.map((q, idx) => {
+                                        const userAnswer = answers[idx];
+                                        const isCorrect = userAnswer === q.correct;
+                                        const isAnswered = userAnswer !== undefined;
+
+                                        return (
+                                            <div key={idx} className="mb-6 p-4 border border-slate-200 rounded-lg">
+                                                <div className="flex items-start justify-between mb-3">
+                                                    <div>
+                                                        <p className="text-sm font-semibold text-slate-500 mb-1">
+                                                            Soal {idx + 1} - {q.category}
+                                                        </p>
+                                                        <p className="text-slate-800 font-semibold">{q.question}</p>
+                                                    </div>
+                                                    <div className={`px-3 py-1 rounded-full font-bold text-sm ${
+                                                        isAnswered && isCorrect
+                                                            ? 'bg-green-100 text-green-700'
+                                                            : isAnswered && !isCorrect
+                                                            ? 'bg-red-100 text-red-700'
+                                                            : 'bg-gray-100 text-gray-700'
+                                                    }`}>
+                                                        {isAnswered && isCorrect ? '✓ BENAR' : isAnswered && !isCorrect ? '✗ SALAH' : 'TIDAK DIJAWAB'}
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-2 gap-4 ml-4">
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-500 mb-2">JAWABAN PESERTA:</p>
+                                                        <div className="bg-slate-50 p-3 rounded border border-slate-200">
+                                                            {isAnswered ? (
+                                                                <div>
+                                                                    <p className="font-semibold text-slate-700">
+                                                                        {q.optionLabels[userAnswer]}. {q.options[userAnswer]}
+                                                                    </p>
+                                                                </div>
+                                                            ) : (
+                                                                <p className="text-slate-500 italic">Tidak ada jawaban</p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-500 mb-2">JAWABAN BENAR:</p>
+                                                        <div className="bg-emerald-50 p-3 rounded border border-emerald-200">
+                                                            <p className="font-semibold text-emerald-700">
+                                                                {q.optionLabels[q.correct]}. {q.options[q.correct]}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Footer */}
+                                <div className="border-t-2 border-slate-300 mt-8 pt-6 text-center text-slate-600 text-sm">
+                                    <p>Laporan ini diproduksi oleh D'Ajiks Academy</p>
+                                    <p className="mt-2">Tanggal & Waktu: {new Date().toLocaleString('id-ID')}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            const question = questions[currentQuestion];
+            const isAnswered = answers[currentQuestion] !== undefined;
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 p-4">
+                    <div className="max-w-6xl mx-auto mb-8">
+                        <div className="flex justify-between items-center mb-6">
+                            <h1 className="playfair text-2xl text-white font-bold">
+                                D'Ajiks Academy
+                            </h1>
+                            <div className="flex items-center gap-3 bg-slate-800/50 backdrop-blur border border-emerald-500/30 rounded-lg px-6 py-3">
+                                <span className="text-slate-400">⏱️</span>
+                                <span className={`text-2xl font-mono font-bold ${timeLeft < 300 ? 'text-red-400' : 'text-emerald-300'}`}>
+                                    {formatTime(timeLeft)}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="bg-slate-800/50 backdrop-blur border border-emerald-500/30 rounded-lg p-4">
+                            <div className="flex justify-between items-center mb-3">
+                                <span className="text-slate-300 text-sm">Soal {currentQuestion + 1} dari {questions.length}</span>
+                                <span className="text-emerald-400 text-sm font-semibold">{Math.round((currentQuestion / questions.length) * 100)}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-300"
+                                    style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-slate-800/50 backdrop-blur border border-emerald-500/30 rounded-2xl p-8 mb-8">
+                            <div className="mb-6">
+                                <span className="inline-block bg-emerald-500/20 text-emerald-300 text-xs font-semibold px-4 py-2 rounded-full mb-4 border border-emerald-500/50">
+                                    {question.category}
+                                </span>
+                                <h2 className="text-white text-2xl font-bold leading-relaxed">
+                                    {question.question}
+                                </h2>
+                            </div>
+
+                            <div className="space-y-3">
+                                {question.options.map((option, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => handleAnswer(idx)}
+                                        className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+                                            answers[currentQuestion] === idx
+                                                ? 'bg-emerald-500/20 border-emerald-500 text-white'
+                                                : 'bg-slate-700/30 border-slate-600 text-slate-300 hover:border-emerald-500/50 hover:bg-slate-700/50'
+                                        }`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold ${
+                                                answers[currentQuestion] === idx
+                                                    ? 'bg-emerald-500 border-emerald-500 text-white'
+                                                    : 'border-slate-500 text-slate-400'
+                                            }`}>
+                                                {question.optionLabels[idx]}
+                                            </div>
+                                            <span className="flex-1">{option}</span>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex gap-4 justify-between">
+                            <button
+                                onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+                                disabled={currentQuestion === 0}
+                                className="flex items-center gap-2 px-6 py-3 bg-slate-800/50 hover:bg-slate-700/50 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg border border-slate-600 transition-all duration-200"
+                            >
+                                ← Sebelumnya
+                            </button>
+
+                            <div className="flex gap-2 flex-wrap justify-center flex-1">
+                                {questions.map((_, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setCurrentQuestion(idx)}
+                                        className={`w-10 h-10 rounded-lg font-semibold transition-all duration-200 border ${
+                                            currentQuestion === idx
+                                                ? 'bg-emerald-500 border-emerald-600 text-white'
+                                                : answers[idx] !== undefined
+                                                ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300'
+                                                : 'bg-slate-700/30 border-slate-600 text-slate-300 hover:border-emerald-500/50'
+                                        }`}
+                                    >
+                                        {idx + 1}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={() => setCurrentQuestion(Math.min(questions.length - 1, currentQuestion + 1))}
+                                    disabled={currentQuestion === questions.length - 1}
+                                    className="flex items-center gap-2 px-6 py-3 bg-slate-800/50 hover:bg-slate-700/50 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg border border-slate-600 transition-all duration-200"
+                                >
+                                    Selanjutnya →
+                                </button>
+
+                                {currentQuestion === questions.length - 1 && (
+                                    <button
+                                        onClick={() => setShowResults(true)}
+                                        className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg border border-emerald-600 transition-all duration-200 font-semibold"
+                                    >
+                                        Selesai
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<DajksAcademy />, document.getElementById('root'));
+    </script>
+</body>
+</html>
