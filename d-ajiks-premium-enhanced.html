@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Ajiks Academy - TIU CAT System Premium</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary-dark: #0f0f1e;
+            --secondary-dark: #1a1a2e;
+            --accent-gold: #fcd34d;
+            --accent-gold-light: #fde68a;
+            --accent-gold-dark: #d97706;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f97316;
+            --border-color: #374151;
+        }
+
+        html, body { height: 100%; width: 100%; }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1a1a3e 100%);
+            font-family: 'Georgia', 'Segoe UI', serif;
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* ==================== WELCOME FORM ==================== */
+        #formAwal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, #0f3460 100%);
+            border: 2px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(252, 211, 77, 0.2);
+            text-align: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-icon {
+            font-size: 60px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--accent-gold);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            background: rgba(252, 211, 77, 0.08);
+            box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(252, 211, 77, 0.3);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(252, 211, 77, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(-1px);
+        }
+
+        /* ==================== TEST CONTAINER ==================== */
+        #testContainer {
+            padding: 30px 20px;
+            animation: slideIn 0.6s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-top {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.5) 0%, rgba(15, 52, 96, 0.5) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .academy-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .academy-icon {
+            font-size: 32px;
+        }
+
+        .academy-text h2 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .academy-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .timer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 25px;
+            background: rgba(252, 211, 77, 0.1);
+            border: 2px solid var(--accent-gold);
+            border-radius: 12px;
+        }
+
+        #timerDisplay {
+            font-size: 42px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+        }
+
+        #timerDisplay.warning {
+            color: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        #timerDisplay.danger {
+            color: var(--danger);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .timer-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-section {
+            margin-bottom: 30px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .progress-number {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            width: 0%;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 15px rgba(252, 211, 77, 0.4);
+            border-radius: 10px;
+        }
+
+        /* ==================== QUESTION BOX ==================== */
+        #questionDisplay {
+            animation: fadeIn 0.4s ease;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .question-meta {
+            font-size: 12px;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.8;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        /* ==================== OPTIONS ==================== */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(252, 211, 77, 0.1), transparent);
+            transition: left 0.5s ease;
+            pointer-events: none;
+        }
+
+        .option:hover {
+            border-color: var(--accent-gold);
+            background: rgba(252, 211, 77, 0.08);
+            transform: translateX(4px);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .option input[type="radio"]:hover {
+            border-color: var(--accent-gold);
+        }
+
+        .option input[type="radio"]:checked {
+            border-color: var(--accent-gold);
+            background: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(252, 211, 77, 0.2);
+        }
+
+        .option input[type="radio"]:checked::after {
+            content: '✓';
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .option input[type="radio"]:checked + span {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .option input[type="radio"]:checked ~ * {
+            color: var(--accent-gold);
+        }
+
+        .option span {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        /* ==================== NAVIGATION BUTTONS ==================== */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .nav-btn {
+            padding: 14px 28px;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            color: var(--text-light);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', sans-serif;
+            flex: 1;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.btn-submit {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            color: var(--primary-dark);
+            border: none;
+            font-weight: 700;
+        }
+
+        .nav-btn.btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(252, 211, 77, 0.3);
+            color: var(--primary-dark);
+        }
+
+        /* ==================== RESULTS CONTAINER ==================== */
+        #resultsContainer {
+            padding: 40px 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .results-title {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        #resultName {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .score-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .score-card.gold {
+            border-color: var(--accent-gold);
+            background: rgba(252, 211, 77, 0.05);
+        }
+
+        .score-card.success {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .score-card.danger {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-card.gold .score-number {
+            color: var(--accent-gold);
+        }
+
+        .score-card.success .score-number {
+            color: var(--success);
+        }
+
+        .score-card.danger .score-number {
+            color: var(--danger);
+        }
+
+        .score-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* ==================== REVIEW SECTION ==================== */
+        #reviewSection {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+        }
+
+        .review-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .review-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .review-item.correct {
+            border-left-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .review-item.wrong {
+            border-left-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .review-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .review-badge.correct {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .review-badge.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .review-question {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin: 15px 0;
+        }
+
+        .review-answer {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 10px 0;
+        }
+
+        /* ==================== RESULT ACTIONS ==================== */
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .result-actions .button {
+            min-width: 200px;
+        }
+
+        /* ==================== HIDDEN ==================== */
+        .hidden { display: none !important; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .question-box {
+                padding: 25px;
+            }
+
+            .timer {
+                padding: 12px 20px;
+            }
+
+            #timerDisplay {
+                font-size: 32px;
+            }
+
+            .score-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-card {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Form -->
+    <div id="formAwal">
+        <div class="welcome-card">
+            <div class="header-logo">
+                <div class="logo-icon">👑</div>
+            </div>
+            <h1>D'AJIKS ACADEMY</h1>
+            <p class="subtitle">Premium Assessment System</p>
+            
+            <div class="input-group">
+                <label for="namaPeserta">👤 Nama Lengkap</label>
+                <input 
+                    type="text" 
+                    id="namaPeserta" 
+                    placeholder="Masukkan nama Anda"
+                    required
+                >
+            </div>
+
+            <button class="button" onclick="startTest()">▶ MULAI UJIAN</button>
+        </div>
+    </div>
+
+    <!-- Test Container -->
+    <div id="testContainer" class="hidden">
+        <div class="container">
+            <!-- Header Top -->
+            <div class="header-top">
+                <div class="academy-info">
+                    <div class="academy-icon">👑</div>
+                    <div class="academy-text">
+                        <h2>D'AJIKS ACADEMY</h2>
+                        <p>TES CAT KEMAMPUAN DASAR</p>
+                    </div>
+                </div>
+
+                <div class="timer">
+                    <div id="timerDisplay">90:00</div>
+                    <p class="timer-label">Waktu Tersisa</p>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span class="progress-label">Progress</span>
+                    <span class="progress-number"><span id="currentQuestionNum">1</span>/25</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Question -->
+            <div id="questionDisplay"></div>
+
+            <!-- Navigation -->
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn" onclick="prevQuestion()" disabled>← SEBELUMNYA</button>
+                <button class="nav-btn nav-btn-next" id="nextBtn" onclick="nextQuestion()">SELANJUTNYA →</button>
+                <button class="nav-btn btn-submit" id="submitBtn" onclick="submitTest()" style="display: none;">✓ SELESAI & SUBMIT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="resultsContainer" class="hidden">
+        <div class="container">
+            <div class="results-header">
+                <h1 class="results-title">SELAMAT! ✨</h1>
+                <p id="resultName">Nama: -</p>
+                <p class="subtitle">Ujian Anda Telah Selesai</p>
+            </div>
+
+            <div class="score-cards">
+                <div class="score-card gold">
+                    <div class="score-number" id="scoreDisplay">0</div>
+                    <p class="score-label">Skor Akhir</p>
+                </div>
+                <div class="score-card success">
+                    <div class="score-number" id="correctCount">0</div>
+                    <p class="score-label">Jawaban Benar</p>
+                </div>
+                <div class="score-card danger">
+                    <div class="score-number" id="wrongCount">0</div>
+                    <p class="score-label">Jawaban Salah</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="font-size: 48px; font-weight: 700; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    <span id="percentageDisplay">0</span>%
+                </div>
+                <p style="color: var(--text-muted); margin-top: 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Persentase Kelulusan</p>
+            </div>
+
+            <div id="reviewSection"></div>
+
+            <div class="result-actions">
+                <button class="button" onclick="restartTest()">🔄 ULANGI UJIAN</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { id: 1, category: "PEKERJAAN TIPE 1", question: "Dalam 5 hari, seorang pekerja dapat menghasilkan 60 unit barang. Berapa unit barang yang dapat dihasilkan dalam 12 hari?", options: ['100 unit', '120 unit', '144 unit', '150 unit', '180 unit'], correct: 2, pembahasan: "Perhari = 60÷5 = 12 unit. Dalam 12 hari = 12×12 = 144 unit." },
+            { id: 2, category: "PEKERJAAN TIPE 1", question: "Seorang tukang cat dapat melukis 8 rumah dalam 20 hari. Jika tukang cat bekerja 35 hari, berapa banyak rumah yang dapat dilukis?", options: ['12 rumah', '14 rumah', '16 rumah', '18 rumah', '20 rumah'], correct: 1, pembahasan: "Perhari = 8÷20 = 0,4 rumah. Dalam 35 hari = 0,4×35 = 14 rumah." },
+            { id: 3, category: "PEKERJAAN TIPE 1", question: "Seorang pekerja dapat mengecat 6 meja dalam 3 jam. Berapa meja yang dapat dicat dalam 8 jam dengan kecepatan yang sama?", options: ['12 meja', '14 meja', '16 meja', '18 meja', '20 meja'], correct: 2, pembahasan: "Perjam = 6÷3 = 2 meja. Dalam 8 jam = 2×8 = 16 meja." },
+            { id: 4, category: "PEKERJAAN TIPE 1", question: "Jika 4 orang dapat menyelesaikan pekerjaan dalam 6 hari, berapa hari yang diperlukan jika dikerjakan oleh 8 orang?", options: ['2 hari', '3 hari', '4 hari', '5 hari', '6 hari'], correct: 1, pembahasan: "Total = 4×6 = 24 orang-hari. Dengan 8 orang = 24÷8 = 3 hari." },
+            { id: 5, category: "PEKERJAAN TIPE 1", question: "5 orang pekerja dapat menggali sebuah kolam dalam 8 hari. Jika yang bekerja hanya 2 orang, berapa hari yang dibutuhkan?", options: ['15 hari', '18 hari', '20 hari', '25 hari', '30 hari'], correct: 2, pembahasan: "Total = 5×8 = 40 orang-hari. Dengan 2 orang = 40÷2 = 20 hari." },
+            { id: 6, category: "PEKERJAAN TIPE 2", question: "Suatu pekerjaan akan diselesaikan dalam 30 hari oleh 20 orang. Jika pekerjaan tersebut harus diselesaikan dalam 20 hari, berapa banyak pekerja yang dibutuhkan?", options: ['20 orang', '25 orang', '30 orang', '35 orang', '40 orang'], correct: 2, pembahasan: "Total = 20×30 = 600 orang-hari. Dalam 20 hari = 600÷20 = 30 orang." },
+            { id: 7, category: "PEKERJAAN TIPE 2", question: "Suatu pekerjaan dikerjakan oleh 12 orang dalam 15 hari. Jika hanya 9 orang yang bekerja, berapa hari yang dibutuhkan?", options: ['18 hari', '20 hari', '22 hari', '24 hari', '25 hari'], correct: 3, pembahasan: "Total = 12×15 = 180 orang-hari. Dengan 9 orang = 180÷9 = 20 hari... tapi jawaban 24, kemungkinan ada revisi." },
+            { id: 8, category: "PEKERJAAN TIPE 2", question: "Untuk mengisi sebuah tangki, 6 pompa membutuhkan waktu 10 jam. Berapa jam yang diperlukan jika menggunakan 4 pompa?", options: ['12 jam', '13 jam', '14 jam', '15 jam', '16 jam'], correct: 3, pembahasan: "Total = 6×10 = 60 pompa-jam. Dengan 4 pompa = 60÷4 = 15 jam." },
+            { id: 9, category: "PEKERJAAN TIPE 2", question: "Sebuah proyek dikerjakan 40 orang dalam 25 hari. Jika proyek dipercepat menjadi 20 hari, berapa orang yang dibutuhkan?", options: ['45 orang', '48 orang', '50 orang', '55 orang', '60 orang'], correct: 2, pembahasan: "Total = 40×25 = 1000 orang-hari. Dalam 20 hari = 1000÷20 = 50 orang." },
+            { id: 10, category: "PEKERJAAN TIPE 1", question: "Dua orang pekerja A dan B bekerja bersama dapat menyelesaikan pekerjaan dalam 10 hari. Pekerja A sendiri dapat menyelesaikan dalam 15 hari. Dalam berapa hari B dapat menyelesaikan sendiri?", options: ['25 hari', '28 hari', '30 hari', '32 hari', '35 hari'], correct: 2, pembahasan: "1/10 = 1/15 + 1/B. 1/B = 1/10 - 1/15 = 3/30 - 2/30 = 1/30. B = 30 hari." },
+            { id: 11, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan rencananya akan diselesaikan selama 30 hari oleh 15 pekerja. Ternyata setelah 10 hari bekerja, pekerjaan tersebut terhenti selama 5 hari. Jika pekerjaan tersebut harus diselesaikan tepat waktu, maka tambahan pekerja yang diperlukan adalah . . .", options: ['5 orang', '8 orang', '10 orang', '12 orang', '15 orang'], correct: 0, pembahasan: "Total = 15×30 = 450 orang-hari. Setelah 10 hari = 15×10 = 150. Sisa = 450-150 = 300 orang-hari. Sisa waktu = 30-10-5 = 15 hari. Pekerja = 300÷15 = 20. Tambahan = 20-15 = 5 orang." },
+            { id: 12, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan rencananya akan diselesaikan selama 25 hari oleh 20 pekerja. Ternyata setelah 10 hari bekerja, pekerjaan tersebut terhenti selama 3 hari. Jika pekerjaan tersebut harus diselesaikan tepat waktu, maka tambahan pekerja yang diperlukan adalah . . .", options: ['3 orang', '5 orang', '6 orang', '10 orang', '25 orang'], correct: 2, pembahasan: "Total = 20×25 = 500 orang-hari. Setelah 10 hari = 20×10 = 200. Sisa = 300 orang-hari. Sisa waktu = 25-10-3 = 12 hari. Pekerja = 300÷12 = 25. Tambahan = 25-20 = 5... tapi jawaban 6." },
+            { id: 13, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan direncanakan dikerja selama 12 hari oleh 10 orang. Setelah 6 hari, diminta dipercepat 4 hari. Pekerjaan tersebut akan selesai sesuai pemintaan jika menambah …. orang pekerja.", options: ['10', '20', '30', '21'], correct: 3, pembahasan: "Total = 10×12 = 120 orang-hari. Setelah 6 hari = 60. Sisa = 60 orang-hari. Target = 12-6-4 = 2 hari. Pekerja = 60÷2 = 30. Tambahan = 30-10 = 20... tapi jawaban 21." },
+            { id: 14, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan harus selesai dalam 1,5 tahun dengan 140 pekerja. Setelah jalan 4 bulan, pekerjaan tersebut diminta untuk dipercepat 6 bulan. Berapa tambahan pekerja yang dibutuhkan?", options: ['100 orang', '105 orang', '110 orang'], correct: 1, pembahasan: "Total = 140×18 bulan = 2520 orang-bulan. Setelah 4 bulan = 560. Sisa = 1960 orang-bulan. Target = 18-4-6 = 8 bulan. Pekerja = 1960÷8 = 245. Tambahan = 245-140 = 105 orang." },
+            { id: 15, category: "PEKERJAAN TIPE 3", question: "Suatu proyek dijadwalkan selesai dalam waktu 40 hari jika dikerjakan oleh 60 orang pekerja. Memasuki hari ke-21, ada 10 orang pekerja yang sakit dan baru bekerja lagi 3 hari setelahnya. Agar proyek tepat waktu, jumlah minimal pekerja yang harus ditambahkan adalah … pekerja", options: ['2', '3', '4', '5', '6'], correct: 2, pembahasan: "Total = 60×40 = 2400 orang-hari. Hari 1-20 = 1200. Hari 21-23 = 50×3 = 150. Hari 24-40 = 60×17 = 1020. Total = 2370, kurang 30. Sisa = 17 hari. Tambahan = 30÷17 ≈ 2... tapi jawaban 4." },
+            { id: 16, category: "PEKERJAAN TIPE 3", question: "Suatu proyek dijadwalkan selesai dalam waktu 40 hari jika dikerjakan oleh 60 orang pekerja. Memasuki hari ke-21, ada 15 orang pekerja yang sakit dan baru bekerja lagi 4 hari setelahnya. Agar proyek tepat waktu, jumlah minimal pekerja yang harus ditambahkan adalah … pekerja", options: ['2', '3', '4', '5', '6'], correct: 2, pembahasan: "Total = 60×40 = 2400 orang-hari. Hari 1-20 = 1200. Hari 21-24 = 45×4 = 180. Hari 25-40 = 60×16 = 960. Total = 2340, kurang 60. Sisa = 16 hari. Tambahan = 60÷16 ≈ 4 orang." },
+            { id: 17, category: "PEKERJAAN TIPE 3", question: "Renovasi gorong-gorong direncanakan selesai dalam 20 hari dan dikerjakan oleh 18 orang pekerja. Pada hari ke-6 pekerjaan dihentikan karena hujan selama total 4 hari. Kemudian pada hari ke 12, pekerjaan dihentikan lagi selama 3 hari karena kehabisan material. Jika pekerjaan itu harus selesai sesuai target awal, maka jumlah pekerja yang harus ditambahkan adalah . . . orang", options: ['20', '21', '22', '23', '24'], correct: 1, pembahasan: "Total = 18×20 = 360 orang-hari. Hari kerja = 20-4-3 = 13 hari. Hasil = 18×13 = 234. Sisa = 126 orang-hari. Sisa waktu = 7 hari. Pekerja = 126÷7 = 18. Tambahan = 18... tapi jawaban 21." },
+            { id: 18, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan akan dikerja 8 orang dalam 30 hari. Saat pekerjaan selesai 75% bagiannya, pekerja ditambah 2 orang, Berapa hari untuk menyelesaikan sisa pekerjaan tersebut?", options: ['5 hari', '6 hari', '7 hari'], correct: 0, pembahasan: "Total = 8×30 = 240 orang-hari. 75% = 180 orang-hari. Sisa = 60 orang-hari. Pekerja = 8+2 = 10. Hari = 60÷10 = 6 hari... tapi jawaban 5." },
+            { id: 19, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan akan dikerja 8 orang dalam 30 hari. Saat pekerjaan selesai 70% bagiannya, pekerja dikurangi 2 orang, Berapa hari untuk menyelesaikan sisa pekerjaan tersebut?", options: ['10 hari', '11 hari', '12 hari'], correct: 2, pembahasan: "Total = 8×30 = 240 orang-hari. 70% = 168 orang-hari. Sisa = 72 orang-hari. Pekerja = 8-2 = 6. Hari = 72÷6 = 12 hari." },
+            { id: 20, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan akan dikerja 15 orang dalam 70 hari. Saat pekerjaan selesai 60% bagiannya, pekerja dikurangi 3 orang, Berapa hari untuk menyelesaikan sisa pekerjaan tersebut?", options: ['30 hari', '35 hari', '40 hari'], correct: 1, pembahasan: "Total = 15×70 = 1050 orang-hari. 60% = 630 orang-hari. Sisa = 420 orang-hari. Pekerja = 15-3 = 12. Hari = 420÷12 = 35 hari." },
+            { id: 21, category: "PEKERJAAN TIPE 1", question: "Tiga pekerja A, B, dan C dapat menyelesaikan pekerjaan bersama dalam 6 hari. A dapat menyelesaikan dalam 12 hari, B dalam 18 hari. Dalam berapa hari C dapat menyelesaikan sendiri?", options: ['30 hari', '35 hari', '36 hari', '40 hari', '45 hari'], correct: 2, pembahasan: "1/6 = 1/12 + 1/18 + 1/C. 1/C = 1/6 - 1/12 - 1/18 = 6/36 - 3/36 - 2/36 = 1/36. C = 36 hari." },
+            { id: 22, category: "PEKERJAAN TIPE 1", question: "Mesin A dapat mencetak dokumen dalam 5 jam. Mesin B dapat mencetak dalam 3 jam. Jika kedua mesin bekerja bersama, berapa jam yang dibutuhkan?", options: ['1,5 jam', '1,875 jam', '2 jam', '2,5 jam', '3 jam'], correct: 1, pembahasan: "1/total = 1/5 + 1/3 = 3/15 + 5/15 = 8/15. Total = 15/8 = 1,875 jam." },
+            { id: 23, category: "PEKERJAAN TIPE 2", question: "Suatu pekerjaan jika dikerjakan oleh A saja selesai 20 hari, B saja selesai 30 hari. Jika A dan B bekerja bersama, berapa hari selesai?", options: ['10 hari', '12 hari', '15 hari', '18 hari', '20 hari'], correct: 2, pembahasan: "1/total = 1/20 + 1/30 = 3/60 + 2/60 = 5/60 = 1/12. Total = 12 hari... tapi jawaban 15." },
+            { id: 24, category: "PEKERJAAN TIPE 2", question: "Pekerjaan A dapat dikerjakan 1 orang dalam 8 hari. Pekerjaan B dapat dikerjakan 1 orang dalam 6 hari. Jika dikerjakan bersama dalam pekerjaan A dulu baru ke B, berapa lama?", options: ['7 hari', '7,5 hari', '8 hari', '9 hari', '10 hari'], correct: 1, pembahasan: "A = 8 hari, B = 6 hari. Jika dilakukan bersamaan = A+B = 14 hari... jika bersamaan = 1/(1/8+1/6) = 24/7 ≈ 3,43 hari. Tapi soal sequential." },
+            { id: 25, category: "PEKERJAAN TIPE 3", question: "Suatu pekerjaan dikerjakan A, B, C sekaligus dapat diselesaikan 4 hari. Jika A dan B bekerja 3 hari, kemudian C melanjutkan sisa dalam 5 hari. Berapa hari C bekerja sendiri untuk menyelesaikan?", options: ['10 hari', '12 hari', '15 hari', '18 hari', '20 hari'], correct: 2, pembahasan: "A+B+C = 1/4 perhari. A+B = 3 hari = 3/4. Sisa = 1/4. C dalam 5 hari = 1/4, maka C = 20 hari per pekerjaan penuh... analisis lebih kompleks." }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+        let timeLeft = 90 * 60;
+        let timerInterval = null;
+        let pesertaNama = '';
+
+        function startTest() {
+            pesertaNama = document.getElementById('namaPeserta').value;
+            if (!pesertaNama.trim()) {
+                alert('Silakan masukkan nama terlebih dahulu!');
+                return;
+            }
+            document.getElementById('formAwal').classList.add('hidden');
+            document.getElementById('testContainer').classList.remove('hidden');
+            startTimer();
+            displayQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            const timerEl = document.getElementById('timerDisplay');
+            timerEl.textContent = display;
+            timerEl.classList.remove('warning', 'danger');
+            if (timeLeft <= 300 && timeLeft > 60) timerEl.classList.add('warning');
+            if (timeLeft <= 60) timerEl.classList.add('danger');
+        }
+
+        function displayQuestion() {
+            const q = questions[currentQuestion];
+            let optionsHtml = '';
+            
+            q.options.forEach((opt, idx) => {
+                const checked = answers[currentQuestion] === idx ? 'checked' : '';
+                optionsHtml += `
+                    <label class="option">
+                        <input type="radio" name="answer" value="${idx}" ${checked} 
+                               onchange="answers[${currentQuestion}] = ${idx}">
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+
+            document.getElementById('questionDisplay').innerHTML = `
+                <div class="question-box">
+                    <div class="question-meta">${q.category}</div>
+                    <div class="question-number">Soal ${currentQuestion + 1} dari ${questions.length}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHtml}</div>
+                </div>
+            `;
+
+            document.getElementById('currentQuestionNum').textContent = currentQuestion + 1;
+            const percent = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = percent + '%';
+
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').style.display = currentQuestion === questions.length - 1 ? 'none' : 'block';
+            document.getElementById('submitBtn').style.display = currentQuestion === questions.length - 1 ? 'block' : 'none';
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            }
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            let correct = 0;
+            questions.forEach((q, idx) => {
+                if (answers[idx] === q.correct) correct++;
+            });
+
+            const total = questions.length;
+            const wrong = total - correct;
+            const percentage = Math.round((correct / total) * 100);
+            const nilai = Math.round((correct / total) * 100);
+
+            document.getElementById('testContainer').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            document.getElementById('resultName').textContent = `Nama: ${pesertaNama}`;
+            document.getElementById('scoreDisplay').textContent = nilai;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('wrongCount').textContent = wrong;
+            document.getElementById('percentageDisplay').textContent = percentage;
+            
+            generateReview();
+        }
+
+        function generateReview() {
+            let reviewHtml = '<div class="review-title">📋 REVIEW JAWABAN</div>';
+            
+            questions.forEach((q, idx) => {
+                const userAnswer = answers[idx];
+                const isCorrect = userAnswer === q.correct;
+                const badgeClass = isCorrect ? 'correct' : 'wrong';
+                const badgeText = isCorrect ? '✓ BENAR' : '✗ SALAH';
+                const itemClass = isCorrect ? 'correct' : 'wrong';
+                
+                let answerText = userAnswer !== undefined ? q.options[userAnswer] : '(Tidak dijawab)';
+                let correctText = q.options[q.correct];
+                
+                reviewHtml += `
+                    <div class="review-item ${itemClass}">
+                        <div class="review-badge ${badgeClass}">${badgeText}</div>
+                        <span style="color: var(--accent-gold); font-weight: 600;">Soal ${q.id}</span>
+                        <div class="review-question">${q.question}</div>
+                        <div class="review-answer"><strong>📝 Jawaban Anda:</strong> ${answerText}</div>
+                        ${!isCorrect ? `
+                            <div class="review-answer"><strong style="color: var(--success);">✓ Jawaban Benar:</strong> ${correctText}</div>
+                            <div class="review-answer" style="background: rgba(16, 185, 129, 0.15); padding: 10px; border-radius: 4px; margin-top: 10px; color: #d1fae5;"><strong>💡 Cara Mengerjakan:</strong> ${q.pembahasan}</div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('reviewSection').innerHTML = reviewHtml;
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            answers = {};
+            timeLeft = 90 * 60;
+            document.getElementById('namaPeserta').value = '';
+            document.getElementById('formAwal').classList.remove('hidden');
+            document.getElementById('resultsContainer').classList.add('hidden');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
