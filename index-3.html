@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Ajiks Academy - TIU CAT Premium</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); color: #f1f5f9; min-height: 100vh; }
+        .hidden { display: none !important; }
+
+        #loginDiv { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .login-box { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); border: 2px solid rgba(6, 182, 212, 0.5); border-radius: 25px; padding: 60px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(6, 182, 212, 0.2); animation: slideDown 0.6s ease-out; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .logo { font-size: 70px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .login-box h1 { font-family: 'Poppins', sans-serif; font-size: 40px; font-weight: 800; background: linear-gradient(135deg, #06b6d4, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+        .login-box p { font-size: 14px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; }
+        .form-group { margin-bottom: 25px; text-align: left; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 10px; color: #e2e8f0; }
+        .form-input { width: 100%; padding: 15px; border: 2px solid rgba(168, 85, 247, 0.3); background: rgba(15, 23, 42, 0.8); border-radius: 12px; color: #f1f5f9; font-size: 15px; transition: all 0.3s; }
+        .form-input:focus { outline: none; border-color: #06b6d4; box-shadow: 0 0 20px rgba(6, 182, 212, 0.4); background: rgba(15, 23, 42, 0.95); }
+        .btn-start { width: 100%; padding: 16px; background: linear-gradient(135deg, #06b6d4, #a855f7); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 20px; }
+        .btn-start:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(6, 182, 212, 0.4); }
+        .info-text { font-size: 12px; color: #94a3b8; margin-top: 20px; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .header { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 15px; padding: 25px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; animation: slideDown 0.6s ease-out; }
+        .header h2 { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 5px; }
+        .header p { font-size: 13px; color: #cbd5e1; }
+        .timer { background: rgba(15, 23, 42, 0.9); padding: 18px 30px; border-radius: 12px; border: 2px solid rgba(6, 182, 212, 0.3); text-align: center; min-width: 150px; }
+        #timerDisplay { font-size: 36px; font-family: 'Courier New', monospace; font-weight: 800; color: #06b6d4; letter-spacing: 2px; }
+        #timerDisplay.warning { color: #f59e0b; animation: pulse 1s infinite; }
+        #timerDisplay.critical { color: #ef4444; animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .timer-label { font-size: 11px; color: #cbd5e1; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .progress { background: rgba(30, 41, 59, 0.8); padding: 18px; border-radius: 15px; margin-bottom: 30px; border: 1px solid rgba(6, 182, 212, 0.2); }
+        #progressInfo { font-size: 13px; color: #cbd5e1; margin-bottom: 12px; display: flex; justify-content: space-between; }
+        .progress-bar { width: 100%; height: 10px; background: rgba(51, 65, 85, 0.5); border-radius: 10px; overflow: hidden; }
+        #progressBar { height: 100%; background: linear-gradient(90deg, #06b6d4, #a855f7); transition: width 0.3s ease; border-radius: 10px; }
+
+        .question-section { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 15px; padding: 40px; margin-bottom: 30px; animation: slideUp 0.6s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #questionType { font-size: 12px; color: #06b6d4; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        #questionText { font-size: 18px; font-weight: 600; margin-bottom: 30px; line-height: 1.6; color: #f1f5f9; }
+        #optionsDiv { display: grid; gap: 12px; }
+        .option { padding: 16px; background: rgba(15, 23, 42, 0.6); border: 2px solid rgba(168, 85, 247, 0.2); border-radius: 10px; color: #f1f5f9; cursor: pointer; transition: all 0.3s; font-size: 14px; line-height: 1.5; }
+        .option:hover { border-color: #06b6d4; background: rgba(6, 182, 212, 0.1); transform: translateX(5px); }
+        .option.selected { border-color: #06b6d4; background: rgba(6, 182, 212, 0.2); box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+
+        .buttons { display: flex; gap: 15px; margin-bottom: 20px; }
+        .btn-nav { flex: 1; padding: 14px; background: rgba(51, 65, 85, 0.5); color: #f1f5f9; border: 2px solid rgba(168, 85, 247, 0.2); border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 14px; }
+        .btn-nav:hover { border-color: #06b6d4; background: rgba(6, 182, 212, 0.1); }
+        .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-submit { flex: 1; padding: 14px; background: linear-gradient(135deg, #06b6d4, #a855f7); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; transition: all 0.3s; font-size: 14px; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4); }
+
+        #resultsDiv { padding: 40px 20px; }
+        .results-card { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 15px; padding: 50px; max-width: 700px; margin: 0 auto; text-align: center; animation: slideDown 0.6s ease-out; }
+        #resultTitle { font-family: 'Poppins', sans-serif; font-size: 48px; font-weight: 800; margin-bottom: 15px; }
+        #resultSubtitle { font-size: 16px; color: #cbd5e1; margin-bottom: 40px; }
+        #scoreDisplay { font-size: 72px; font-weight: 800; color: #06b6d4; margin: 30px 0; font-family: 'Poppins', sans-serif; }
+        #scoreRatio { font-size: 16px; color: #cbd5e1; margin-bottom: 40px; }
+
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 40px; }
+        .stat { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 10px; padding: 25px; }
+        .stat-number { font-size: 36px; font-weight: 800; color: #06b6d4; margin-bottom: 10px; }
+        .stat-label { font-size: 12px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px; }
+
+        .review { margin-top: 40px; text-align: left; border-top: 1px solid rgba(6, 182, 212, 0.2); padding-top: 30px; }
+        .review h3 { font-size: 18px; font-weight: 700; color: #06b6d4; margin-bottom: 20px; text-transform: uppercase; }
+        .review-item { background: rgba(15, 23, 42, 0.6); border-left: 4px solid rgba(6, 182, 212, 0.3); border-radius: 8px; padding: 18px; margin-bottom: 15px; transition: all 0.3s; }
+        .review-item.correct { border-left-color: #10b981; background: rgba(16, 185, 129, 0.08); }
+        .review-item.wrong { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.08); }
+        .review-question { font-size: 14px; font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
+        .review-answer { font-size: 13px; margin: 8px 0 8px 20px; color: #cbd5e1; }
+        .review-correct { color: #10b981 !important; }
+        .review-wrong { color: #ef4444 !important; }
+
+        .pembahasan { background: rgba(6, 182, 212, 0.1); border-left: 3px solid #06b6d4; padding: 12px; border-radius: 6px; margin: 12px 0 0 20px; font-size: 12px; color: #a5f3fc; line-height: 1.5; }
+        .tutor-box { background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.1)); border: 2px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 15px; margin: 15px 0 0 20px; font-size: 13px; color: #e0d5ff; line-height: 1.6; }
+
+        .results-buttons { display: flex; gap: 12px; margin-top: 40px; }
+        .results-buttons button { flex: 1; padding: 14px; background: linear-gradient(135deg, #06b6d4, #a855f7); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .results-buttons button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4); }
+        .results-buttons button.reset { background: rgba(51, 65, 85, 0.5); border: 2px solid rgba(168, 85, 247, 0.2); color: #f1f5f9; }
+        .results-buttons button.reset:hover { border-color: #06b6d4; background: rgba(6, 182, 212, 0.1); }
+
+        @media (max-width: 768px) {
+            .login-box { padding: 40px; }
+            .header { flex-direction: column; gap: 20px; text-align: center; }
+            .buttons { flex-direction: column; }
+            .stats { grid-template-columns: 1fr; }
+            .results-buttons { flex-direction: column; }
+            .results-card { padding: 30px; }
+            #resultTitle { font-size: 36px; }
+            #scoreDisplay { font-size: 48px; }
+        }
+
+        @media print {
+            body { background: white; }
+            .results-buttons { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loginDiv" class="">
+    <div class="login-box">
+        <div class="logo">🎓</div>
+        <h1>D'Ajiks Academy</h1>
+        <p>TES CAT KEMAMPUAN DASAR</p>
+        <div class="form-group">
+            <label class="form-label">👤 Nama Lengkap</label>
+            <input type="text" id="nameInput" class="form-input" placeholder="Masukkan Nama Anda" maxlength="50">
+        </div>
+        <button class="btn-start" onclick="loginUser()">
+            <i class="fas fa-play"></i> MULAI UJIAN
+        </button>
+        <p class="info-text">Inspektorat Pemerintah Provinsi Sulawesi Tenggara</p>
+    </div>
+</div>
+
+<div id="testDiv" class="hidden">
+    <div class="container">
+        <div class="header">
+            <div>
+                <h2>TES CAT KEMAMPUAN DASAR</h2>
+                <p id="soalInfo">Soal 1 dari 25</p>
+            </div>
+            <div class="timer">
+                <div id="timerDisplay">90:00</div>
+                <div class="timer-label">WAKTU TERSISA</div>
+            </div>
+        </div>
+
+        <div class="progress">
+            <div id="progressInfo">
+                <span>Progres: 0%</span>
+                <span>Terjawab: 0/25</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="question-section">
+            <div id="questionType">SOAL 1</div>
+            <h3 id="questionText">Loading...</h3>
+            <div id="optionsDiv"></div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn-nav" id="prevBtn" onclick="prevQ()" disabled>
+                <i class="fas fa-chevron-left"></i> Sebelumnya
+            </button>
+            <button class="btn-nav" id="nextBtn" onclick="nextQ()">
+                Selanjutnya <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="btn-submit" onclick="submitTest()">
+                <i class="fas fa-check"></i> SELESAI & SUBMIT
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="resultsDiv" class="hidden">
+    <div class="results-card">
+        <h1 id="resultTitle">Luar Biasa!</h1>
+        <p id="resultSubtitle">Anda berhasil menyelesaikan tes!</p>
+
+        <div id="scoreDisplay">0%</div>
+        <p id="scoreRatio">0/25</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="correctScore">0</div>
+                <div class="stat-label">✓ Benar</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="wrongScore">0</div>
+                <div class="stat-label">✗ Salah</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="emptyScore">25</div>
+                <div class="stat-label">⊙ Kosong</div>
+            </div>
+        </div>
+
+        <div class="review" id="reviewDiv"></div>
+
+        <div class="results-buttons">
+            <button class="reset" onclick="resetTest()">
+                <i class="fas fa-redo"></i> ULANGI UJIAN
+            </button>
+            <button onclick="window.print()">
+                <i class="fas fa-print"></i> CETAK HASIL
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const questions = [
+    {num:1,tipe:"TIPE 1",q:"Ani dapat menyelesaikan pekerjaan dalam 10 hari. Beni dapat menyelesaikan pekerjaan dalam 15 hari. Jika keduanya bekerja bersama, berapa hari untuk menyelesaikan pekerjaan?",o:["5 hari","6 hari","8 hari","12 hari","25 hari"],c:1,p:"Kecepatan Ani = 1/10 per hari. Kecepatan Beni = 1/15 per hari. Bersama = 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6. Jadi 6 hari.",t:"Untuk soal menggabungkan kecepatan kerja dua orang, gunakan rumus: 1/Total = 1/A + 1/B. Ini adalah konsep pekerjaan bersama. Semakin banyak orang bekerja, semakin cepat selesai. Jadi kita jumlahkan kecepatannya (1/10 + 1/15), bukan harinya."},
+    {num:2,tipe:"TIPE 1",q:"Rini menyelesaikan 5 laporan dalam 2 jam. Berapa laporan yang dapat diselesaikan Rini dalam 8 jam?",o:["10 laporan","15 laporan","20 laporan","25 laporan","30 laporan"],c:2,p:"Kecepatan = 5 laporan / 2 jam = 2,5 laporan per jam. Dalam 8 jam = 2,5 × 8 = 20 laporan.",t:"Soal ini menggunakan prinsip perbandingan lurus. Jika semakin banyak waktu, semakin banyak hasil. Cari kecepatan per jam terlebih dahulu (laporan/jam), kemudian kalikan dengan total jam yang diminta."},
+    {num:3,tipe:"TIPE 1",q:"Dinas Pertanian memiliki 12 pekerja yang dapat menyelesaikan proyek dalam 20 hari. Jika ditambah 8 pekerja lagi, berapa hari proyek dapat diselesaikan?",o:["10 hari","12 hari","15 hari","25 hari","30 hari"],c:2,p:"Total kerja = 12 × 20 = 240 orang-hari. Pekerja baru = 12 + 8 = 20 orang. Hari = 240 ÷ 20 = 12 hari.",t:"Konsep: Total pekerjaan adalah konstan (orang-hari). Semakin banyak orang, semakin cepat selesai. Hitung total orang-hari terlebih dahulu, kemudian bagi dengan jumlah orang yang ada."},
+    {num:4,tipe:"TIPE 1",q:"Jika 3 orang dapat mengangkut 90 kg barang dalam 1 hari, berapa kg barang yang dapat diangkut oleh 5 orang dalam 1 hari?",o:["120 kg","135 kg","150 kg","180 kg","200 kg"],c:2,p:"Per orang = 90 ÷ 3 = 30 kg per hari. 5 orang = 30 × 5 = 150 kg per hari.",t:"Soal produktivitas per orang. Cari berapa banyak yang bisa dikerjakan 1 orang (hasil per orang), kemudian kalikan dengan jumlah orang yang ada. Ini adalah perbandingan lurus dengan jumlah orang."},
+    {num:5,tipe:"TIPE 1",q:"Proyek pembangunan jalan membutuhkan 30 pekerja selama 40 hari. Jika hanya tersedia 20 pekerja, berapa hari proyek akan selesai?",o:["20 hari","30 hari","40 hari","50 hari","60 hari"],c:4,p:"Total kerja = 30 × 40 = 1200 orang-hari. Dengan 20 pekerja = 1200 ÷ 20 = 60 hari.",t:"Dengan pekerja lebih sedikit, waktu akan lebih lama. Total pekerjaan tidak berubah (1200 orang-hari). Bagi total pekerjaan dengan jumlah pekerja yang tersedia untuk mendapat durasi."},
+    {num:6,tipe:"TIPE 1",q:"Seorang penulis dapat menulis 8 halaman dalam 4 jam. Berapa halaman yang dapat ditulis dalam 10 jam?",o:["10 halaman","15 halaman","20 halaman","25 halaman","30 halaman"],c:2,p:"Kecepatan = 8 ÷ 4 = 2 halaman per jam. Dalam 10 jam = 2 × 10 = 20 halaman.",t:"Cari produktivitas per satuan waktu (halaman/jam), kemudian kalikan dengan total waktu. Ini adalah prinsip dasar kecepatan × waktu = hasil."},
+    {num:7,tipe:"TIPE 1",q:"Tim A terdiri dari 6 orang dapat menyelesaikan tugasnya dalam 12 hari. Tim B terdiri dari 4 orang dengan kemampuan yang sama. Berapa hari Tim B menyelesaikan tugas yang sama?",o:["8 hari","12 hari","16 hari","18 hari","20 hari"],c:3,p:"Total kerja = 6 × 12 = 72 orang-hari. Tim B = 4 orang, maka hari = 72 ÷ 4 = 18 hari.",t:"Ketika tim lebih kecil dengan kemampuan sama, waktu bertambah. Total pekerjaan tetap (72 orang-hari). Membagi dengan lebih sedikit orang berarti lebih banyak hari."},
+    {num:8,tipe:"TIPE 1",q:"Jika X pekerja dapat menyelesaikan pekerjaan dalam 5 hari, dan pekerjaan yang sama dapat diselesaikan oleh (X+3) pekerja dalam 3 hari, berapa nilai X?",o:["1.5","2","2.5","3","3.5"],c:3,p:"Total kerja = X × 5 = (X+3) × 3. Jadi 5X = 3X + 9. Maka 2X = 9, X = 4.5.",t:"Soal aljabar: Total pekerjaan adalah sama di kedua kondisi. Buat persamaan: Orang1 × Hari1 = Orang2 × Hari2. Selesaikan persamaan untuk mencari X."},
+    {num:9,tipe:"TIPE 1",q:"Sebuah proyek dengan target 500 unit dapat diselesaikan oleh 20 pekerja dalam 25 hari. Jika target ditambah menjadi 600 unit dengan 25 pekerja, berapa hari untuk menyelesaikan?",o:["16 hari","18 hari","20 hari","24 hari","30 hari"],c:3,p:"Produktivitas = 500 unit / (20 pekerja × 25 hari) = 1 unit/orang/hari. Untuk 600 unit dengan 25 pekerja = 600 ÷ (25 × 1) = 24 hari.",t:"Soal produktivitas. Cari produktivitas per orang per hari dari kondisi pertama. Kemudian gunakan untuk menghitung waktu di kondisi kedua."},
+    {num:10,tipe:"TIPE 1",q:"A dapat menyelesaikan pekerjaan dalam 15 hari. B dapat menyelesaikan dalam 20 hari. Jika bekerja bersama, berapa hari selesai?",o:["5 hari","6 hari","8 hari","8.57 hari","12 hari"],c:3,p:"Kecepatan A = 1/15, B = 1/20. Bersama = 1/15 + 1/20 = 4/60 + 3/60 = 7/60. Hari = 60/7 ≈ 8.57 hari.",t:"Rumus pekerjaan bersama: 1/Total = 1/A + 1/B. Tambahkan kecepatannya (fraksi), kemudian balik untuk mendapat total hari."},
+    {num:11,tipe:"TIPE 2",q:"Departemen A dengan 8 pekerja dapat mencapai target 80 item per hari. Jika jumlah pekerja ditambah menjadi 12, berapa item per hari yang dapat dicapai?",o:["100 item","110 item","120 item","130 item","140 item"],c:2,p:"Per pekerja = 80 ÷ 8 = 10 item/hari. Dengan 12 pekerja = 10 × 12 = 120 item/hari.",t:"Soal ini tentang produktivitas per orang. Jika kemampuan setiap orang sama, maka hasil total = item per orang × jumlah orang."},
+    {num:12,tipe:"TIPE 2",q:"Kantor A dengan 15 karyawan dapat menyelesaikan 60 berkas administrasi per hari. Jika karyawan menjadi 25, berapa berkas per hari?",o:["80 berkas","90 berkas","100 berkas","110 berkas","120 berkas"],c:2,p:"Per karyawan = 60 ÷ 15 = 4 berkas/hari. Dengan 25 karyawan = 4 × 25 = 100 berkas/hari.",t:"Proporsi langsung: semakin banyak karyawan, semakin banyak output. Hitung per orang dulu (60÷15=4), kemudian kalikan dengan jumlah baru."},
+    {num:13,tipe:"TIPE 2",q:"Pabrik dengan 30 mesin dapat memproduksi 1500 unit per hari. Jika mesin dikurangi menjadi 20, berapa unit per hari?",o:["750 unit","1000 unit","1200 unit","1350 unit","1500 unit"],c:1,p:"Per mesin = 1500 ÷ 30 = 50 unit/hari. Dengan 20 mesin = 50 × 20 = 1000 unit/hari.",t:"Kurang mesin berarti kurang produksi. Per mesin = 1500÷30 = 50 unit/mesin/hari. Dengan 20 mesin, kalikan: 50 × 20 = 1000."},
+    {num:14,tipe:"TIPE 2",q:"Tim dengan 12 orang dapat mengumpulkan data dari 240 responden dalam 10 hari. Jika tim menjadi 18 orang, berapa hari untuk 360 responden?",o:["8 hari","10 hari","12 hari","15 hari","20 hari"],c:2,p:"Produktivitas = 240 / (12 × 10) = 2 responden/orang/hari. Untuk 360 responden = 360 ÷ (18 × 2) = 10 hari.",t:"Cari produktivitas per orang per hari: 240÷(12×10)=2. Kemudian bagi target baru dengan (orang × produktivitas): 360÷(18×2)=10."},
+    {num:15,tipe:"TIPE 2",q:"Proyek 40 hari dengan 15 pekerja. Setelah 10 hari, ditambah 5 pekerja. Jika kecepatan kerja tetap, berapa total hari proyek selesai?",o:["28 hari","30 hari","32 hari","35 hari","40 hari"],c:1,p:"Total kerja = 15 × 40 = 600 orang-hari. Setelah 10 hari = 150. Sisa = 450. Dengan 20 orang = 450 ÷ 20 = 22.5 hari. Total = 10 + 22.5 ≈ 32 hari.",t:"Total pekerjaan adalah 600 orang-hari. Sudah dikerjakan 150 (15×10). Sisa 450, dengan 20 pekerja = 450÷20 = 22.5 hari. Total waktu = 10 + 22.5 = 32.5 hari."},
+    {num:16,tipe:"TIPE 3",q:"Konstruksi 60 hari dengan 24 pekerja. Setelah 20 hari, 6 pekerja berhenti. Berapa hari tambahan?",o:["15 hari","20 hari","25 hari","30 hari","35 hari"],c:2,p:"Total = 24 × 60 = 1440 orang-hari. Setelah 20 hari = 480. Sisa = 960. Dengan 18 pekerja = 960 ÷ 18 ≈ 53 hari. Tambahan ≈ 33 hari.",t:"Total pekerjaan 1440 orang-hari. Sudah 480 (24×20). Sisa 960. Pekerja berkurang jadi 24-6=18. Waktu untuk sisa = 960÷18 ≈ 53 hari."},
+    {num:17,tipe:"TIPE 3",q:"Pekerjaan 20 hari oleh 10 orang. Setelah 8 hari, 4 orang ditambahkan. Berapa hari dari awal?",o:["12 hari","14 hari","16 hari","18 hari","20 hari"],c:2,p:"Total = 10 × 20 = 200 orang-hari. Setelah 8 hari = 80. Sisa = 120. Dengan 14 orang = 120 ÷ 14 ≈ 8.6 hari. Total ≈ 16.6 hari.",t:"Total 200 orang-hari. Selesai 80 (10×8). Sisa 120. Dengan 14 orang, sisa dikerjakan 120÷14 ≈ 8.6 hari. Total = 8 + 8.6 ≈ 16.6 hari."},
+    {num:18,tipe:"TIPE 3",q:"Produksi 1000 unit, 25 hari, 20 mesin. Setelah 10 hari, target 1200 unit. Mesin tambahan?",o:["2 mesin","3 mesin","4 mesin","5 mesin","6 mesin"],c:2,p:"Per mesin per hari = 1000 ÷ (20 × 25) = 2 unit. Setelah 10 hari = 400 unit. Sisa = 800 unit, waktu = 15 hari. Mesin perlu = 800 ÷ (15 × 2) ≈ 27. Tambahan ≈ 7.",t:"Produktivitas = 1000÷(20×25) = 2 unit/mesin/hari. Selesai 400 (20×10×2). Sisa 800 unit, waktu sisa 15 hari. Mesin perlu = 800÷(15×2) ≈ 26.7 ≈ 27."},
+    {num:19,tipe:"TIPE 3",q:"Pekerjaan A, 6 orang, 30 hari. Setelah 12 hari, 3 orang pindah. Total hari?",o:["36 hari","38 hari","40 hari","42 hari","44 hari"],c:3,p:"Total = 6 × 30 = 180 orang-hari. Setelah 12 hari = 72. Sisa = 108. Dengan 3 orang = 108 ÷ 3 = 36 hari. Total = 12 + 36 = 48 hari.",t:"Total 180 orang-hari. Selesai 72 (6×12). Sisa 108. Orang berkurang jadi 6-3=3. Waktu sisa = 108÷3 = 36 hari. Total = 12 + 36 = 48 hari."},
+    {num:20,tipe:"TIPE 3",q:"Laporan, 8 orang, 15 hari. Hari ke-6, 2 orang ditambah. Total hari?",o:["11 hari","12 hari","13 hari","14 hari","15 hari"],c:2,p:"Total = 8 × 15 = 120 orang-hari. Setelah 6 hari = 48. Sisa = 72. Dengan 10 orang = 72 ÷ 10 = 7.2 hari. Total ≈ 13.2 hari.",t:"Total 120 orang-hari. Selesai 48 (8×6). Sisa 72. Orang bertambah jadi 8+2=10. Waktu sisa = 72÷10 = 7.2 hari. Total = 6 + 7.2 = 13.2 hari."},
+    {num:21,tipe:"TIPE 3",q:"Survey 35 hari, 14 surveyor. Hari ke-15, tambah 6 surveyor. Selesai hari ke?",o:["25 hari","27 hari","29 hari","31 hari","33 hari"],c:2,p:"Total = 14 × 35 = 490 orang-hari. Setelah 15 hari = 210. Sisa = 280. Dengan 20 surveyor = 280 ÷ 20 = 14 hari. Total = 15 + 14 = 29 hari.",t:"Total 490 orang-hari. Selesai 210 (14×15). Sisa 280. Surveyor bertambah jadi 14+6=20. Waktu sisa = 280÷20 = 14 hari. Total = 15 + 14 = 29 hari."},
+    {num:22,tipe:"TIPE 3",q:"Sistem info, 12 dev, 40 hari. Hari ke-16, 4 dev ditambah. Total hari?",o:["32 hari","34 hari","36 hari","38 hari","40 hari"],c:2,p:"Total = 12 × 40 = 480 orang-hari. Setelah 16 hari = 192. Sisa = 288. Dengan 16 dev = 288 ÷ 16 = 18 hari. Total = 16 + 18 = 34 hari.",t:"Total 480 orang-hari. Selesai 192 (12×16). Sisa 288. Dev bertambah jadi 12+4=16. Waktu sisa = 288÷16 = 18 hari. Total = 16 + 18 = 34 hari."},
+    {num:23,tipe:"TIPE 3",q:"Data 5000 record, 10 operator, 20 hari. Setelah 8 hari, 5 operator ditambah. Selesai?",o:["14 hari","15 hari","16 hari","17 hari","18 hari"],c:3,p:"Total = 10 × 20 = 200 orang-hari. Setelah 8 hari = 80. Sisa = 120. Dengan 15 operator = 120 ÷ 15 = 8 hari. Total = 8 + 8 = 16 hari.",t:"Total 200 orang-hari. Selesai 80 (10×8). Sisa 120. Operator bertambah jadi 10+5=15. Waktu sisa = 120÷15 = 8 hari. Total = 8 + 8 = 16 hari."},
+    {num:24,tipe:"TIPE 3",q:"Audit, 9 auditor, 24 hari. Hari ke-10, 3 auditor ditambah. Total hari?",o:["17 hari","18 hari","19 hari","20 hari","21 hari"],c:2,p:"Total = 9 × 24 = 216 orang-hari. Setelah 10 hari = 90. Sisa = 126. Dengan 12 auditor = 126 ÷ 12 = 10.5 hari. Total ≈ 20.5 hari.",t:"Total 216 orang-hari. Selesai 90 (9×10). Sisa 126. Auditor bertambah jadi 9+3=12. Waktu sisa = 126÷12 = 10.5 hari. Total = 10 + 10.5 = 20.5 hari."},
+    {num:25,tipe:"TIPE 3",q:"Proyek 15 orang, 18 hari. Jika 9 orang tersedia, berapa hari?",o:["25 hari","27 hari","30 hari","32 hari","35 hari"],c:2,p:"Total = 15 × 18 = 270 orang-hari. Dengan 9 orang = 270 ÷ 9 = 30 hari.",t:"Total pekerjaan 270 orang-hari. Dengan hanya 9 orang, waktu akan lebih lama. Hari = 270÷9 = 30 hari. Lebih sedikit orang berarti lebih banyak hari."}
+];
+
+let idx=0,ans={},time=90*60,tid=null;
+
+function loginUser(){
+    const n=document.getElementById('nameInput').value.trim();
+    if(!n){alert('Nama harus diisi!');return;}
+    document.getElementById('loginDiv').classList.add('hidden');
+    document.getElementById('testDiv').classList.remove('hidden');
+    idx=0;ans={};time=90*60;
+    tid=setInterval(()=>{time--;updateTimer();if(time<=0){clearInterval(tid);submitTest();}},1000);
+    displayQuestion();
+}
+
+function updateTimer(){
+    const m=Math.floor(time/60),s=time%60;
+    const d=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    const el=document.getElementById('timerDisplay');
+    el.textContent=d;
+    el.classList.remove('warning','critical');
+    if(time<=60)el.classList.add('critical');
+    else if(time<=300)el.classList.add('warning');
+}
+
+function displayQuestion(){
+    const q=questions[idx];
+    document.getElementById('soalInfo').textContent='Soal '+(idx+1)+' dari 25';
+    document.getElementById('questionType').textContent='PEKERJAAN '+q.tipe;
+    document.getElementById('questionText').textContent=q.q;
+    const c=document.getElementById('optionsDiv');
+    c.innerHTML='';
+    const lb=['A','B','C','D','E'];
+    q.o.forEach((o,i)=>{
+        const d=document.createElement('div');
+        d.className='option';
+        if(ans[idx]===i)d.classList.add('selected');
+        d.textContent=lb[i]+'. '+o;
+        d.onclick=()=>{ans[idx]=i;displayQuestion();};
+        c.appendChild(d);
+    });
+    document.getElementById('prevBtn').disabled=idx===0;
+    document.getElementById('nextBtn').disabled=idx===24;
+    const a=Object.keys(ans).length;
+    const p=Math.round((idx+1)/25*100);
+    document.getElementById('progressBar').style.width=p+'%';
+    document.getElementById('progressInfo').innerHTML='<span>Progres: '+p+'%</span><span>Terjawab: '+a+'/25</span>';
+}
+
+function prevQ(){if(idx>0){idx--;displayQuestion();}}
+function nextQ(){if(idx<24){idx++;displayQuestion();}}
+
+function submitTest(){
+    clearInterval(tid);
+    let cr=0;
+    questions.forEach((q,i)=>{if(ans[i]===q.c)cr++;});
+    const tot=25,wr=tot-cr-(tot-Object.keys(ans).length),em=tot-Object.keys(ans).length,pct=Math.round(cr/tot*100),pass=pct>=70;
+    document.getElementById('testDiv').classList.add('hidden');
+    document.getElementById('resultsDiv').classList.remove('hidden');
+    document.getElementById('resultTitle').textContent=pass?'Luar Biasa!':'Coba Lagi';
+    document.getElementById('resultTitle').style.color=pass?'#06b6d4':'#ff6b6b';
+    document.getElementById('resultSubtitle').textContent=pass?'Anda berhasil menyelesaikan tes!':'Tingkatkan score Anda dengan latihan lebih banyak!';
+    document.getElementById('scoreDisplay').textContent=pct+'%';
+    document.getElementById('scoreRatio').textContent=cr+'/25';
+    document.getElementById('correctScore').textContent=cr;
+    document.getElementById('wrongScore').textContent=wr;
+    document.getElementById('emptyScore').textContent=em;
+    const rs=document.getElementById('reviewDiv');
+    rs.innerHTML='<h3>📋 RIWAYAT JAWABAN</h3>';
+    questions.forEach((q,i)=>{
+        const ua=ans[i],isc=ua===q.c,ia=ua!==undefined;
+        const lb=['A','B','C','D','E'];
+        let h='<div class="review-item '+(ia?isc?'correct':'wrong':'')+'"><div class="review-question"><strong>Soal '+(i+1)+' - PEKERJAAN '+q.tipe+'</strong></div><div class="review-question">'+q.q+'</div>';
+        if(ia)h+='<div class="review-answer '+(isc?'review-correct':'review-wrong')+'">'+( isc?'✓':'✗')+' Jawaban Anda: '+lb[ua]+' - '+q.o[ua]+'</div>';
+        else h+='<div class="review-answer">⊙ Tidak dijawab</div>';
+        if(!isc&&ia){
+            h+='<div class="review-answer review-correct">✓ Jawaban Benar: '+lb[q.c]+' - '+q.o[q.c]+'</div>';
+            h+='<div class="pembahasan">💡 <strong>Cara:</strong> '+q.p+'</div>';
+            h+='<div class="tutor-box"><strong>👨‍🏫 Penjelasan Tutor:</strong><br>'+q.t+'</div>';
+        }
+        else if(isc&&ia){
+            h+='<div class="pembahasan">💡 <strong>Cara:</strong> '+q.p+'</div>';
+        }
+        h+='</div>';
+        const dv=document.createElement('div');
+        dv.innerHTML=h;
+        rs.appendChild(dv.firstElementChild);
+    });
+}
+
+function resetTest(){
+    document.getElementById('resultsDiv').classList.add('hidden');
+    document.getElementById('loginDiv').classList.remove('hidden');
+    document.getElementById('nameInput').value='';
+    document.getElementById('nameInput').focus();
+}
+
+window.onload=()=>{document.getElementById('nameInput').focus();};
+</script>
+
+</body>
+</html>
